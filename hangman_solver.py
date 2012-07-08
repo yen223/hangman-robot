@@ -32,7 +32,7 @@ class hangman_solver:
             print 'Guessed letter:',next_letter
             raw_input()
 
-    def get_next_letter(self):
+    def get_next_letter(self, word_set):
         '''
         Builds the table of letter frequency to letter in possible words.
         Possible words are words that
@@ -42,7 +42,7 @@ class hangman_solver:
         E.g. 
         Possible words = 'element', 'letters', 'acrobat'
         freq('l') = 2
-        freq('e') = 3
+        freq('t') = 3
         freq('z') = 0
 
         Returns letter with highest frequency
@@ -50,23 +50,23 @@ class hangman_solver:
         self.find_possible_words()
         print self.word_set
 
-    def find_possible_words(self):
+    def find_possible_words(self, pattern, wrong_letters, word_set):
         '''
         Find all remaining possible words, by filtering out words which
             - don't match the currently known pattern
             - contain a wrong letter
 
-        Returns list of words.
+        Returns set of words.
         '''
         q = set()
-        for word in self.word_set:
+        for word in word_set:
             for index, x in enumerate(word):
-                if x in self.wrong_letters: break
-                if self.pattern[index] != '' and self.pattern[index] != x: break
+                if x in wrong_letters: break
+                if pattern[index] != '' and pattern[index] != x: break
             else:
                 q.add(word)
 
-        self.word_set = q
+        return q
 def main():
     path = r'./dictionary.txt'
     solver = hangman_solver(path)
